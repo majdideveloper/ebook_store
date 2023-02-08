@@ -1,42 +1,41 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
+import 'package:my_own_ebook/providers/app_provider.dart';
+import 'package:my_own_ebook/resources/auth_methods.dart';
 import 'package:my_own_ebook/screens/auth/login_screen.dart';
 import 'package:my_own_ebook/screens/user_screen/widgets/header_user_screen.dart';
 import 'package:my_own_ebook/screens/user_screen/widgets/my_list_tile.dart';
 import 'package:provider/provider.dart';
 
+import 'package:my_own_ebook/models/user.dart' as model;
+import '../../providers/user_provider.dart';
 import '../../utils/show_dialog/show_dialog.dart';
 import '../wishlist_screen/wishlist_screen.dart';
 
-class UserScreen extends StatelessWidget {
-  const UserScreen({super.key});
+class UserScreen extends StatefulWidget {
+  UserScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    TextEditingController controller = TextEditingController();
+  State<UserScreen> createState() => _UserScreenState();
+}
 
+class _UserScreenState extends State<UserScreen> {
+  @override
+  Widget build(BuildContext context) {
     return SafeArea(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const HeaderUserScreen(
-            name: "youssef",
-            email: "youssef@email.com",
+          HeaderUserScreen(
+            name: context.watch<UserProvider>().getUser.username,
+            email: context.watch<UserProvider>().getUser.email,
           ),
-
           const Divider(
             thickness: 2,
           ),
-
-          // MyListTile(
-          //   title: "Address",
-          //   subtitle: "My Address 2",
-          //   leading: const Icon(IconlyLight.profile),
-          //   trailing: const Icon(IconlyLight.arrowRight2),
-          //   onTap: () => showAddressDialog(context, controller),
-          // ),
-
           MyListTile(
             title: "Wishlist",
             leading: const Icon(IconlyLight.heart),
@@ -46,14 +45,6 @@ class UserScreen extends StatelessWidget {
                   MaterialPageRoute(builder: ((context) => WishlistScreen())));
             },
           ),
-
-          MyListTile(
-            title: "Forget Password",
-            leading: const Icon(IconlyLight.unlock),
-            trailing: const Icon(IconlyLight.arrowRight2),
-          ),
-          // theme
-
           MyListTile(
             title: "Logout",
             leading: const Icon(IconlyLight.logout),
@@ -63,7 +54,9 @@ class UserScreen extends StatelessWidget {
                   context: context,
                   title: "Sign out",
                   content: "are you sure to Sign Out",
-                  onPressedOkButton: () {
+                  onPressedOkButton: () async {
+                    await AuthMethods().signOut();
+                    context.read<AppProvider>().setCurrentIndex = 0;
                     Navigator.pushAndRemoveUntil(
                         context,
                         MaterialPageRoute(builder: (context) => LoginScreen()),

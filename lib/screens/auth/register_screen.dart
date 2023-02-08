@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
+import 'package:my_own_ebook/resources/auth_methods.dart';
 import 'package:my_own_ebook/screens/auth/login_screen.dart';
 import 'package:my_own_ebook/screens/auth/widget/auth_button.dart';
 
@@ -212,35 +213,35 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         height: 20,
                       ),
 
-                      TextFormField(
-                        focusNode: _addressFocusNode,
-                        textInputAction: TextInputAction.done,
-                        onEditingComplete: _submitFormOnRegister,
-                        controller: _addressTextController,
-                        validator: (value) {
-                          if (value!.isEmpty || value.length < 10) {
-                            return "Please enter a valid  address";
-                          } else {
-                            return null;
-                          }
-                        },
-                        style: const TextStyle(color: Colors.white),
-                        maxLines: 2,
-                        textAlign: TextAlign.start,
-                        decoration: const InputDecoration(
-                          hintText: 'Shipping address',
-                          hintStyle: TextStyle(color: Colors.white),
-                          enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
-                          ),
-                          focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
-                          ),
-                          errorBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.red),
-                          ),
-                        ),
-                      ),
+                      // TextFormField(
+                      //   focusNode: _addressFocusNode,
+                      //   textInputAction: TextInputAction.done,
+                      //   onEditingComplete: _submitFormOnRegister,
+                      //   controller: _addressTextController,
+                      //   validator: (value) {
+                      //     if (value!.isEmpty || value.length < 10) {
+                      //       return "Please enter a valid  address";
+                      //     } else {
+                      //       return null;
+                      //     }
+                      //   },
+                      //   style: const TextStyle(color: Colors.white),
+                      //   maxLines: 2,
+                      //   textAlign: TextAlign.start,
+                      //   decoration: const InputDecoration(
+                      //     hintText: 'Shipping address',
+                      //     hintStyle: TextStyle(color: Colors.white),
+                      //     enabledBorder: UnderlineInputBorder(
+                      //       borderSide: BorderSide(color: Colors.white),
+                      //     ),
+                      //     focusedBorder: UnderlineInputBorder(
+                      //       borderSide: BorderSide(color: Colors.white),
+                      //     ),
+                      //     errorBorder: UnderlineInputBorder(
+                      //       borderSide: BorderSide(color: Colors.red),
+                      //     ),
+                      //   ),
+                      // ),
                     ],
                   ),
                 ),
@@ -250,8 +251,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 Constants.meduimPaddingHor,
                 AuthButton(
                   buttonText: 'Sign up',
-                  fct: () {
-                    _submitFormOnRegister();
+                  fct: () async {
+                    String res = await AuthMethods().signUpUser(
+                        email: _emailTextController.text,
+                        password: _passTextController.text,
+                        username: _fullNameController.text);
+
+                    if (res == 'success') {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => LoginScreen()));
+                    }
                   },
                 ),
                 const SizedBox(

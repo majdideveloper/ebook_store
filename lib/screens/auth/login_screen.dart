@@ -1,10 +1,13 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:my_own_ebook/resources/auth_methods.dart';
 import 'package:my_own_ebook/screens/auth/forget_password_screen.dart';
 import 'package:my_own_ebook/screens/auth/register_screen.dart';
 import 'package:my_own_ebook/screens/auth/widget/auth_button.dart';
 import 'package:my_own_ebook/screens/bottom_bar/bottom_bar.dart';
+import 'package:provider/provider.dart';
 
+import '../../providers/user_provider.dart';
 import '../../utils/constants.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -176,8 +179,12 @@ class _LoginScreenState extends State<LoginScreen> {
                   height: 10,
                 ),
                 AuthButton(
-                  fct: () {
-                    if (_emailTextController.text == _passTextController.text) {
+                  fct: () async {
+                    String res = await AuthMethods().loginUser(
+                        email: _emailTextController.text,
+                        password: _passTextController.text);
+                    await context.read<UserProvider>().refreshUser();
+                    if (res == "success") {
                       Navigator.pushAndRemoveUntil(
                           context,
                           MaterialPageRoute(builder: (context) => BottomBar()),
