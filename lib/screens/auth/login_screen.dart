@@ -4,6 +4,7 @@ import 'package:my_own_ebook/resources/auth_methods.dart';
 import 'package:my_own_ebook/screens/auth/forget_password_screen.dart';
 import 'package:my_own_ebook/screens/auth/register_screen.dart';
 import 'package:my_own_ebook/screens/auth/widget/auth_button.dart';
+import 'package:my_own_ebook/screens/auth/widget/textfield_auth.dart';
 import 'package:my_own_ebook/screens/bottom_bar/bottom_bar.dart';
 import 'package:provider/provider.dart';
 
@@ -42,189 +43,159 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(children: [
-        Container(
-          color: Colors.black.withOpacity(0.7),
-        ),
-        SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                const SizedBox(
-                  height: 120.0,
-                ),
-                const Text(
-                  'Welcome Back',
-                  style: TextStyle(
-                      color: Colors.blue,
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold),
-                ),
-                Constants.smallPaddingHor,
-                const Text(
-                  'Sign Up to continue',
-                  style: TextStyle(
-                      color: Colors.blue,
-                      fontSize: 18,
-                      fontWeight: FontWeight.normal),
-                ),
-                const SizedBox(
-                  height: 30.0,
-                ),
-                Form(
-                    key: _formKey,
-                    child: Column(
-                      children: [
-                        TextFormField(
-                          textInputAction: TextInputAction.next,
-                          onEditingComplete: () => FocusScope.of(context)
-                              .requestFocus(_passFocusNode),
-                          controller: _emailTextController,
-                          keyboardType: TextInputType.emailAddress,
-                          validator: (value) {
-                            if (value!.isEmpty || !value.contains('@')) {
-                              return 'Please enter a valid email address';
-                            } else {
-                              return null;
-                            }
-                          },
-                          style: const TextStyle(color: Colors.white),
-                          decoration: const InputDecoration(
-                            hintText: 'Email',
-                            hintStyle: TextStyle(color: Colors.white),
-                            enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.white),
-                            ),
-                            focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.white),
-                            ),
+    return SafeArea(
+      child: Scaffold(
+        body: Stack(children: [
+          Container(
+            color: Colors.white.withOpacity(0.7),
+          ),
+          SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Constants.smallPaddingHor,
+                  Image.asset(
+                    'assets/images/logo marron.png',
+                    height: 100,
+                    width: 150,
+                  ),
+                  const SizedBox(
+                    height: 120.0,
+                  ),
+                  const Text(
+                    'Welcome Back',
+                    style: TextStyle(
+                        color: Colors.orange,
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  Constants.smallPaddingHor,
+                  const Text(
+                    'Sign Up to continue',
+                    style: TextStyle(
+                        color: Colors.orange,
+                        fontSize: 18,
+                        fontWeight: FontWeight.normal),
+                  ),
+                  const SizedBox(
+                    height: 30.0,
+                  ),
+                  Form(
+                      key: _formKey,
+                      child: Column(
+                        children: [
+                          MyTextField(
+                            controller: _emailTextController,
+                            hintText: 'email',
+                            obscureText: false,
+                            validator: (value) {
+                              if (value!.isEmpty || !value.contains('@')) {
+                                return 'Please enter a valid email address';
+                              } else {
+                                return null;
+                              }
+                            },
                           ),
-                        ),
-                        SizedBox(
-                          height: 12,
-                        ),
-                        //Password
+                          Constants.smallPaddingHor,
+                          MyTextField(
+                            controller: _passTextController,
+                            hintText: 'password',
+                            obscureText: true,
+                            validator: (value) {
+                              if (value!.isEmpty || value.length < 6) {
+                                return 'Please enter a valid password';
+                              } else {
+                                return null;
+                              }
+                            },
+                          ),
 
-                        TextFormField(
-                          textInputAction: TextInputAction.done,
-                          onEditingComplete: () {
-                            _submitFormOnLogin();
-                          },
-                          controller: _passTextController,
-                          focusNode: _passFocusNode,
-                          obscureText: _obscureText,
-                          keyboardType: TextInputType.visiblePassword,
-                          validator: (value) {
-                            if (value!.isEmpty || value.length < 7) {
-                              return 'Please enter a valid password';
-                            } else {
-                              return null;
-                            }
-                          },
-                          style: const TextStyle(color: Colors.white),
-                          decoration: InputDecoration(
-                            suffixIcon: GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    _obscureText = !_obscureText;
-                                  });
-                                },
-                                child: Icon(
-                                  _obscureText
-                                      ? Icons.visibility
-                                      : Icons.visibility_off,
-                                  color: Colors.white,
-                                )),
-                            hintText: 'Password',
-                            hintStyle: const TextStyle(color: Colors.white),
-                            enabledBorder: const UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.white),
-                            ),
-                            focusedBorder: const UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.white),
-                            ),
-                          ),
-                        ),
-                      ],
-                    )),
-                const SizedBox(
-                  height: 10,
-                ),
-                Align(
-                  alignment: Alignment.topRight,
-                  child: TextButton(
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: ((context) => ForgetPasswordScreen())));
-                    },
-                    child: const Text(
-                      'Forget password?',
-                      maxLines: 1,
-                      style: TextStyle(
-                          color: Colors.lightBlue,
-                          fontSize: 18,
-                          decoration: TextDecoration.underline,
-                          fontStyle: FontStyle.italic),
+                          //Password
+                        ],
+                      )),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Align(
+                    alignment: Alignment.topRight,
+                    child: TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: ((context) =>
+                                    ForgetPasswordScreen())));
+                      },
+                      child: const Text(
+                        'Forget password?',
+                        maxLines: 1,
+                        style: TextStyle(
+                            color: Colors.orange,
+                            fontSize: 18,
+                            decoration: TextDecoration.underline,
+                            fontStyle: FontStyle.italic),
+                      ),
                     ),
                   ),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                AuthButton(
-                  fct: () async {
-                    String res = await AuthMethods().loginUser(
-                        email: _emailTextController.text,
-                        password: _passTextController.text);
-                    await context.read<UserProvider>().refreshUser();
-                    if (res == "success") {
-                      Navigator.pushAndRemoveUntil(
-                          context,
-                          MaterialPageRoute(builder: (context) => BottomBar()),
-                          (route) => false);
-                    }
-                  },
-                  buttonText: 'Login',
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                RichText(
-                    text: TextSpan(
-                        text: 'Don\'t have an account?',
-                        style:
-                            const TextStyle(color: Colors.white, fontSize: 18),
-                        children: [
-                      TextSpan(
-                          text: '  Sign up',
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  AuthButton(
+                    fct: () async {
+                      if (_formKey.currentState!.validate()) {
+                        // If the form is valid, display a Snackbar.
+                        String res = await AuthMethods().loginUser(
+                            email: _emailTextController.text,
+                            password: _passTextController.text);
+                        await context.read<UserProvider>().refreshUser();
+                        if (res == "success") {
+                          Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => BottomBar()),
+                              (route) => false);
+                        }
+                      }
+                    },
+                    buttonText: 'Login',
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  RichText(
+                      text: TextSpan(
+                          text: 'Don\'t have an account?',
                           style: const TextStyle(
-                              color: Colors.lightBlue,
-                              fontSize: 18,
-                              fontWeight: FontWeight.w600),
-                          recognizer: TapGestureRecognizer()
-                            ..onTap = () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: ((context) =>
-                                          RegisterScreen())));
-                            }),
-                    ]))
-              ],
+                              color: Colors.orangeAccent, fontSize: 18),
+                          children: [
+                        TextSpan(
+                            text: '  Sign up',
+                            style: const TextStyle(
+                                color: Colors.orange,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w600),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: ((context) =>
+                                            RegisterScreen())));
+                              }),
+                      ]))
+                ],
+              ),
             ),
-          ),
-        )
-      ]),
+          )
+        ]),
+      ),
     );
   }
 }

@@ -17,10 +17,14 @@ class AuthButton extends StatelessWidget {
       child: InkWell(
         onTap: fct,
         child: Container(
-          color: Colors.blue,
+          color: Colors.orange,
           height: 50,
           width: double.infinity,
-          child: Center(child: Text(buttonText)),
+          child: Center(
+              child: Text(
+            buttonText,
+            style: TextStyle(color: Colors.white),
+          )),
         ),
       ),
     );

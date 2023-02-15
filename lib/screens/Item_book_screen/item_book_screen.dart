@@ -3,6 +3,7 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:my_own_ebook/providers/cart_provider.dart';
+import 'package:my_own_ebook/screens/auth/widget/auth_button.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/book.dart';
@@ -94,18 +95,11 @@ class ItemBookScreen extends StatelessWidget {
                 style: Constants.smallStyle
                     .copyWith(overflow: TextOverflow.ellipsis),
               ),
-              ElevatedButton(
-                  onPressed: () {
+              AuthButton(
+                  fct: () {
                     context.read<CartProvider>().addBookToCart(book);
                   },
-                  child: SizedBox(
-                      width: double.infinity,
-                      height: 50,
-                      child: Center(
-                          child: Text(
-                        'Add to cart',
-                        style: Constants.normalStyleBold,
-                      )))),
+                  buttonText: 'Add to cart'),
             ],
           ),
         ),

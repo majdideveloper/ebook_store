@@ -24,8 +24,13 @@ class _CartItemWidgetState extends State<CartItemWidget> {
 
   @override
   Widget build(BuildContext context) {
-    double priceBook =
-        widget.book.onSale ? widget.book.priceOnSale! : widget.book.price;
+    double priceBook;
+    if (widget.book.priceOnSale == null) {
+      priceBook = widget.book.price;
+    } else {
+      priceBook = widget.book.priceOnSale!;
+    }
+
     double priceQuantity = quantity * priceBook;
     return Padding(
       padding: const EdgeInsets.all(12.0),

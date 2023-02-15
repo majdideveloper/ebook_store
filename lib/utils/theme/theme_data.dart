@@ -12,16 +12,16 @@ class Styles {
             color: Colors.blue,
           ),
           titleTextStyle: const TextStyle(
-            color: Colors.blue,
+            color: Colors.orange,
             fontSize: 18,
             letterSpacing: 5,
           ),
           backgroundColor:
-              isDarkTheme ? const Color(0xFF0a0d2c) : const Color(0xFFF2FDFD)),
+              isDarkTheme ? const Color(0xFF0a0d2c) : Colors.grey[300]),
       scaffoldBackgroundColor:
           //0A1931  // white yellow 0xFFFCF8EC
           isDarkTheme ? const Color(0xFF00001a) : const Color(0xFFFFFFFF),
-      primaryColor: Color.fromRGBO(33, 150, 243, 1),
+      primaryColor: Colors.orange, //Color.fromRGBO(33, 150, 243, 1),
       colorScheme: ThemeData().colorScheme.copyWith(
             secondary:
                 isDarkTheme ? const Color(0xFF1a1f3c) : const Color(0xFFE8FDFD),

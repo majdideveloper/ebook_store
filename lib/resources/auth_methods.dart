@@ -36,6 +36,7 @@ class AuthMethods {
         username: username,
         uid: cred.user!.uid,
         email: email,
+        isAdmin: false,
       );
 
       // adding user in our database

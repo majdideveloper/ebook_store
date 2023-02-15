@@ -12,6 +12,7 @@ import 'package:provider/provider.dart';
 import 'package:my_own_ebook/models/user.dart' as model;
 import '../../providers/user_provider.dart';
 import '../../utils/show_dialog/show_dialog.dart';
+import '../add_product_screen/add_product_screen.dart';
 import '../wishlist_screen/wishlist_screen.dart';
 
 class UserScreen extends StatefulWidget {
@@ -24,14 +25,16 @@ class UserScreen extends StatefulWidget {
 class _UserScreenState extends State<UserScreen> {
   @override
   Widget build(BuildContext context) {
+    var userData = context.watch<UserProvider>().getUser;
+
     return SafeArea(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           HeaderUserScreen(
-            name: context.watch<UserProvider>().getUser.username,
-            email: context.watch<UserProvider>().getUser.email,
+            name: userData.username,
+            email: userData.email,
           ),
           const Divider(
             thickness: 2,
@@ -45,6 +48,19 @@ class _UserScreenState extends State<UserScreen> {
                   MaterialPageRoute(builder: ((context) => WishlistScreen())));
             },
           ),
+          userData.isAdmin
+              ? MyListTile(
+                  title: "Add Product",
+                  leading: const Icon(IconlyLight.addUser),
+                  trailing: const Icon(IconlyLight.arrowRight2),
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: ((context) => AddProductScreen())));
+                  },
+                )
+              : SizedBox(),
           MyListTile(
             title: "Logout",
             leading: const Icon(IconlyLight.logout),

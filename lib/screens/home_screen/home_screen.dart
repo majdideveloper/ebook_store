@@ -2,18 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:my_own_ebook/providers/product_provider.dart';
+import 'package:my_own_ebook/screens/home_screen/widgets/new_book_widget.dart';
 import 'package:my_own_ebook/screens/home_screen/widgets/on_sale_widget.dart';
 import 'package:my_own_ebook/screens/home_screen/widgets/slider_home.dart';
 import 'package:my_own_ebook/widegts/item_book_widget.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../utils/constants.dart';
 import '../all_products_screen/all_products_screen.dart';
 import '../on_sale_screen/on_sale_screen.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+  HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +25,11 @@ class HomeScreen extends StatelessWidget {
         child: SingleChildScrollView(
           child: Column(children: [
             SliderHome(),
+            Text(
+              "New Books",
+              style: Constants.titleStyle.copyWith(color: Colors.orange),
+            ),
+            NewBooksWidget(),
             Center(
               child: TextButton(
                 onPressed: () {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:my_own_ebook/screens/auth/widget/auth_button.dart';
+import 'package:my_own_ebook/screens/auth/widget/textfield_auth.dart';
 
 class ForgetPasswordScreen extends StatefulWidget {
   static const routeName = '/ForgetPasswordScreen';
@@ -29,7 +30,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
       body: Stack(
         children: [
           Container(
-            color: Colors.black.withOpacity(0.7),
+            color: Colors.white.withOpacity(0.7),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(
@@ -56,11 +57,15 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                 ),
                 const Text(
                   'Forget password',
-                  style: TextStyle(color: Colors.white, fontSize: 30),
+                  style: TextStyle(color: Colors.orange, fontSize: 30),
                 ),
                 const SizedBox(
                   height: 30,
                 ),
+                MyTextField(
+                    controller: _emailTextController,
+                    hintText: "your email",
+                    obscureText: false),
                 TextField(
                   controller: _emailTextController,
                   style: const TextStyle(color: Colors.white),
